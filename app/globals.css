@@ -1,26 +1,259 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
+/* ─── Design tokens (dark — default) ─────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-0: #0a0a0a;
+  --bg-1: #111111;
+  --bg-2: #161616;
+  --bg-3: #1d1d1d;
+
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --fg: #f5f5f5;
+  --fg-dim: rgba(245, 245, 245, 0.58);
+  --fg-faint: rgba(245, 245, 245, 0.32);
+
+  --accent: #5d8bf4;
+  --accent-soft: rgba(93, 139, 244, 0.14);
+  --accent-line: rgba(93, 139, 244, 0.36);
+  --accent-deep: #1a2a6b;
+  --good: #7cf5c4;
+
+  --font-sans: "Geist", "Helvetica Neue", Helvetica, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --maxw: 1280px;
+  --pad-x: 40px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Light mode overrides ────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-0: #fafafa;
+  --bg-1: #f4f4f4;
+  --bg-2: #ebebeb;
+  --bg-3: #e0e0e0;
+
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.16);
+
+  --fg: #0a0a0a;
+  --fg-dim: rgba(10, 10, 10, 0.6);
+  --fg-faint: rgba(10, 10, 10, 0.35);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Reset ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-0);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(93, 139, 244, 0.08), transparent 60%),
+    radial-gradient(circle at 80% 10%, rgba(93, 139, 244, 0.04), transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ─── Typography ──────────────────────────────────────────────────────────── */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+h2 {
+  font-size: clamp(34px, 4.2vw, 56px);
+  line-height: 1.03;
+  letter-spacing: -0.028em;
+}
+h3 {
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 1.15;
+}
+h4 {
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ─── Layout primitives ───────────────────────────────────────────────────── */
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+@media (max-width: 760px) {
+  .wrap {
+    padding: 0 20px;
+  }
+}
+
+/* ─── Eyebrow label ───────────────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent);
+  flex-shrink: 0;
+}
+
+/* ─── Dot grid background utility ────────────────────────────────────────── */
+.dotgrid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  pointer-events: none;
+}
+
+/* ─── Tag / pill ──────────────────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-dim);
+  letter-spacing: 0.04em;
+}
+.tag.accent {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+/* ─── Radix UI portal z-index fix (admin overlay is z-1000) ──────────────── */
+[data-radix-popper-content-wrapper],
+[data-radix-portal] > div {
+  z-index: 1100 !important;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-0); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
+
+/* ─── Selection ───────────────────────────────────────────────────────────── */
+::selection { background: var(--accent); color: #0a0a0a; }
+
+/* ─── shadcn/ui CSS variable bridge ──────────────────────────────────────── */
+:root {
+  --background: 0 0% 4%;
+  --foreground: 0 0% 96%;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 96%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 96%;
+  --primary: 220 91% 64%;
+  --primary-foreground: 0 0% 4%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 96%;
+  --muted: 0 0% 10%;
+  --muted-foreground: 0 0% 55%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 96%;
+  --border: 0 0% 14%;
+  --input: 0 0% 14%;
+  --ring: 220 91% 64%;
+  --radius: 0.5rem;
+  --sidebar-background: 0 0% 7%;
+  --sidebar-foreground: 0 0% 82%;
+  --sidebar-primary: 220 91% 64%;
+  --sidebar-primary-foreground: 0 0% 4%;
+  --sidebar-accent: 0 0% 12%;
+  --sidebar-accent-foreground: 0 0% 96%;
+  --sidebar-border: 0 0% 12%;
+  --sidebar-ring: 220 91% 64%;
+}
+
+[data-theme="light"] {
+  --background: 0 0% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 220 91% 64%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 220 91% 64%;
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5% 26%;
+  --sidebar-primary: 220 91% 64%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 5% 96%;
+  --sidebar-accent-foreground: 240 6% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 220 91% 64%;
 }

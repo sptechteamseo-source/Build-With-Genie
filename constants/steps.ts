@@ -1,0 +1,58 @@
+import type { Step } from "@/types";
+
+export const HOW_IT_WORKS_STEPS: Step[] = [
+  {
+    key: "discover",
+    label: "Discover",
+    sub: "01 / 1–2 days",
+    title: "Turn a 30-minute call into a working spec.",
+    desc: "A senior engineer walks through the idea with you. Claude Cowork transcribes, drafts user stories, surfaces edge cases and produces a one-page brief. You leave the call already knowing what we'd build first.",
+    meta: ["Claude Cowork", "Discovery doc", "Risk register", "Scope ladder"],
+    art: "doc",
+  },
+  {
+    key: "design",
+    label: "Design",
+    sub: "02 / 2–4 days",
+    title: "A clickable prototype before a single line of production code.",
+    desc: "We generate a high-fidelity prototype with Claude — full flows, every state, real copy. You click through it the same week. Anything that feels wrong gets fixed in a prototype, not in production.",
+    meta: ["Claude", "Prototype", "User flows", "Design tokens"],
+    art: "flow",
+  },
+  {
+    key: "architect",
+    label: "Architect",
+    sub: "03 / 1 day",
+    title: "A boring, defensible architecture — chosen with AI, signed by humans.",
+    desc: "We feed your constraints (compliance, scale, budget, team) into a comparison across stacks. The output is a one-page architecture doc with explicit tradeoffs. A senior signs it. No surprises in month three.",
+    meta: ["Stack decision", "Tradeoff matrix", "Cost model", "Compliance map"],
+    art: "arch",
+  },
+  {
+    key: "build",
+    label: "Build",
+    sub: "04 / 8–16 days",
+    title: "Claude Code writes the code. A senior reviews every line.",
+    desc: "Tasks are sliced thin, executed by Claude Code and Codex, then human-reviewed via pull request. We ship to a staging URL daily — you watch it grow. No surprise demos at the end.",
+    meta: ["Claude Code", "Codex (async)", "Daily staging", "PR review"],
+    art: "code",
+  },
+  {
+    key: "qa",
+    label: "QA",
+    sub: "05 / 2–3 days",
+    title: "Tests written by AI, run by AI, broken by AI.",
+    desc: "Unit, integration and end-to-end tests are generated alongside the code. Gemini Antigravity drives the app like a user, on every browser and screen size. Failures are auto-triaged before a human looks at them.",
+    meta: ["Gemini Antigravity", "Playwright", "A11y audit", "Load test"],
+    art: "qa",
+  },
+  {
+    key: "deploy",
+    label: "Deliver",
+    sub: "06 / Day 1",
+    title: "Ship to production with a hand-off your team can actually own.",
+    desc: "We deploy to your infra, transfer the repo, run an architecture walkthrough and leave behind runbooks, AI prompts and dashboards. Optional 30-day warranty. Optional retainer if you want us to keep going.",
+    meta: ["Production deploy", "Runbooks", "Hand-off doc", "AI playbooks"],
+    art: "deploy",
+  },
+];
