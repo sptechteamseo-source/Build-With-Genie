@@ -55,24 +55,39 @@ function toPublic(doc: BlogDoc): PublicPost {
 // ─── Queries (published only) ───────────────────────────────────────────────────
 
 export async function getPublishedPosts(): Promise<PublicPost[]> {
-  await connectToDatabase();
-  const docs = await BlogPost.find({ status: "published" })
-    .sort({ createdAt: -1 })
-    .lean<BlogDoc[]>();
-  return docs.map(toPublic);
+  try {
+    await connectToDatabase();
+    const docs = await BlogPost.find({ status: "published" })
+      .sort({ createdAt: -1 })
+      .lean<BlogDoc[]>();
+    return docs.map(toPublic);
+  } catch (err) {
+    console.error("[blog] getPublishedPosts failed:", err);
+    return [];
+  }
 }
 
 export async function getPublishedPostBySlug(slug: string): Promise<PublicPost | null> {
-  await connectToDatabase();
-  const doc = await BlogPost.findOne({ slug, status: "published" }).lean<BlogDoc | null>();
-  return doc ? toPublic(doc) : null;
+  try {
+    await connectToDatabase();
+    const doc = await BlogPost.findOne({ slug, status: "published" }).lean<BlogDoc | null>();
+    return doc ? toPublic(doc) : null;
+  } catch (err) {
+    console.error("[blog] getPublishedPostBySlug failed:", err);
+    return null;
+  }
 }
 
 export async function getRelatedPosts(slug: string, limit = 3): Promise<PublicPost[]> {
-  await connectToDatabase();
-  const docs = await BlogPost.find({ status: "published", slug: { $ne: slug } })
-    .sort({ createdAt: -1 })
-    .limit(limit)
-    .lean<BlogDoc[]>();
-  return docs.map(toPublic);
+  try {
+    await connectToDatabase();
+    const docs = await BlogPost.find({ status: "published", slug: { $ne: slug } })
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .lean<BlogDoc[]>();
+    return docs.map(toPublic);
+  } catch (err) {
+    console.error("[blog] getRelatedPosts failed:", err);
+    return [];
+  }
 }

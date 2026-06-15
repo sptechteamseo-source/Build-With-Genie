@@ -12,15 +12,21 @@ interface TestimonialDoc {
 
 // Visible testimonials only, newest first.
 export async function getVisibleTestimonials(): Promise<PublicTestimonial[]> {
-  await connectToDatabase();
-  const docs = await Testimonial.find({ visible: true })
-    .sort({ createdAt: -1 })
-    .lean<TestimonialDoc[]>();
-  return docs.map((d) => ({
-    name: d.name,
-    role: d.role,
-    company: d.company,
-    rating: d.rating,
-    text: d.text,
-  }));
+  try {
+    await connectToDatabase();
+    const docs = await Testimonial.find({ visible: true })
+      .sort({ createdAt: -1 })
+      .lean<TestimonialDoc[]>();
+    return docs.map((d) => ({
+      name: d.name,
+      role: d.role,
+      company: d.company,
+      rating: d.rating,
+      text: d.text,
+    }));
+  } catch (err) {
+    // DB unreachable / misconfigured — degrade gracefully instead of crashing the page.
+    console.error("[testimonials] getVisibleTestimonials failed:", err);
+    return [];
+  }
 }
