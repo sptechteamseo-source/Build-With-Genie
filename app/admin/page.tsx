@@ -9,6 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import type { IAdminUser } from "@/types";
 
+// Live dashboard stats — read from MongoDB at request time, never prerendered.
+export const dynamic = "force-dynamic";
+
 async function getDashboardData() {
   await connectToDatabase();
   const [

@@ -1,12 +1,5 @@
 import mongoose from "mongoose";
 
-// Ensures a single connection is reused across hot-reloads in development
-const MONGODB_URI = process.env.MONGODB_URI as string;
-
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable in .env.local");
-}
-
 // Cache the connection on the global object so it survives Next.js hot-reload
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -27,6 +20,10 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
   }
 
   if (!cached.promise) {
+    const MONGODB_URI = process.env.MONGODB_URI;
+    if (!MONGODB_URI) {
+      throw new Error("Please define the MONGODB_URI environment variable");
+    }
     cached.promise = mongoose.connect(MONGODB_URI, {
       bufferCommands: false,
     });
