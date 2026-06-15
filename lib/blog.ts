@@ -56,10 +56,12 @@ function toPublic(doc: BlogDoc): PublicPost {
 
 export async function getPublishedPosts(): Promise<PublicPost[]> {
   try {
-    await connectToDatabase();
+    const conn = await connectToDatabase();
     const docs = await BlogPost.find({ status: "published" })
       .sort({ createdAt: -1 })
       .lean<BlogDoc[]>();
+    // TEMP diagnostic — visible in Vercel function logs.
+    console.log(`[blog] db="${conn.connection.name}" publishedPosts=${docs.length}`);
     return docs.map(toPublic);
   } catch (err) {
     console.error("[blog] getPublishedPosts failed:", err);
